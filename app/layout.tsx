@@ -19,12 +19,12 @@ const display = Mukta({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE.name} — an ambient street-corner radio`,
+  title: `${SITE.name} — an ambient rainy-night radio`,
   description: SITE.description,
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: SITE.name, statusBarStyle: "black-translucent" },
   openGraph: {
-    title: `${SITE.name} — an ambient street-corner radio`,
+    title: `${SITE.name} — an ambient rainy-night radio`,
     description: SITE.description,
     type: "website",
   },
