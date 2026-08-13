@@ -8,8 +8,7 @@ export const SITE = {
     "Ghazals and old film songs for rainy nights by the Upper Lake — the playlist that lived in a black SUV.",
   longDescription:
     "Mehdi Hassan, Ghulam Ali, Jagjit Singh, Noor Jehan, Farida Khanum, and the black-and-white film songs that outlived their films. Rain on the roof, lake through the windshield, nowhere to be.",
-  // TODO: point these at your own accounts before deploying.
-  contactEmail: "you@example.com",
+  contactEmail: "riyanshchouhan1223@gmail.com",
   whatsappUrl: "",
   spotifyUrl: "https://open.spotify.com/playlist/3NpxysKD7Lae1QRQ6kQ2nQ",
   ytMusicUrl: "",
