@@ -14,6 +14,7 @@ import {
 import { usePlayer } from "@/lib/player";
 import { useRain } from "@/lib/use-rain";
 import { formatTime, thumbnail } from "@/lib/format";
+import { RainOverlay } from "@/components/scene/RainOverlay";
 
 export function PlayerBar() {
   const {
@@ -40,6 +41,8 @@ export function PlayerBar() {
   const VolumeIcon = muted || volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
 
   return (
+    <>
+    <RainOverlay active={raining} />
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-4 sm:pb-6">
       <div className="glass-strong pointer-events-auto animate-rise relative flex w-full max-w-2xl items-center gap-3 rounded-3xl p-3 shadow-[0_24px_70px_rgba(0,0,0,0.55)] sm:gap-4 sm:rounded-[32px] sm:p-4">
         <Image
@@ -141,6 +144,7 @@ export function PlayerBar() {
         ) : null}
       </div>
     </div>
+    </>
   );
 }
 
