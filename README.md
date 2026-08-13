@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Old Money 🎙️
 
-## Getting Started
+An ambient web radio for ghazals and old Hindi film songs — one scene, one player, playing round the clock.
 
-First, run the development server:
+Built as a re-take on [deluxesalon.in](https://deluxesalon.in), pointed at a different catalogue: Mehdi Hassan, Ghulam Ali, Jagjit Singh, Noor Jehan, Farida Khanum, and the black-and-white film songs that outlived their films.
+
+---
+
+## How it works
+
+Audio is played by a hidden **YouTube IFrame player**. Nothing is hosted here, and no API key is needed — which keeps the whole thing a static Next.js app with zero backend and zero running cost.
+
+| Layer | Choice |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4 |
+| Audio | YouTube IFrame API (hidden 1×1 player) |
+| Catalogue | Imported from a public Spotify playlist |
+| Install | PWA — manifest + service worker |
+
+## Running it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install && npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The catalogue
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Songs come from a public Spotify playlist, matched to YouTube videos. Two scripts do this, and neither needs credentials:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+node scripts/import-spotify.mjs <playlist-url>
+```
 
-## Learn More
+Reads the playlist off Spotify's embed payload, removes exact repeats, and buckets tracks into rotations by artist. Writes `data/rotations.ts` with empty `youtubeId` fields.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+node scripts/resolve-ids.mjs --write
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Searches YouTube for each track and confirms every candidate through the public oEmbed endpoint before accepting it, so no unverified video ID reaches the data file. Run without `--write` for a dry run. Rows it can't match confidently keep an empty `youtubeId` and are filtered out of every queue rather than failing at playback.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Rotation buckets are the `RULES` array at the top of `scripts/import-spotify.mjs` — edit the artist lists there and re-import.
 
-## Deploy on Vercel
+## Swapping the backdrop
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The scene is the one thing meant to be replaced. Drop artwork into `public/scene/` and point `lib/scene.ts` at it:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```ts
+export const SCENE = {
+  src: "/scene/baithak.jpg",
+  alt: "…",
+  focus: "center 45%",
+};
+```
+
+Until `src` is set, a CSS-painted room stands in. The legibility washes in `components/scene/Scene.tsx` sit on top of whatever you supply, so text stays readable.
+
+A prompt that suits this catalogue, for whichever image model you like:
+
+> A dimly lit North Indian baithak after midnight — low teak seating, deep red velvet bolsters, a harmonium and tabla resting on a white sheet, brass lamp casting warm amber light, faint cigarette smoke, patterned rug, aged plaster wall. Wide cinematic composition, painterly, muted warm palette, 16:9, no people in the centre.
+
+## Making it yours
+
+Everything renameable lives in `lib/site.ts` — name, Devanagari title, tagline, contact email, and the Spotify / YT Music / WhatsApp links. The links are hidden until you fill them in.
+
+## Credits
+
+All rights stay with the labels, composers and performers. Playback is YouTube's embedded player; this site hosts no audio.
