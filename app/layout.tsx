@@ -6,7 +6,6 @@ import { Scene } from "@/components/scene/Scene";
 import { PlayerBar } from "@/components/player/PlayerBar";
 import { TopNav } from "@/components/chrome/TopNav";
 import { Clock } from "@/components/chrome/Clock";
-import { Presence } from "@/components/chrome/Presence";
 import { ServiceWorker } from "@/components/chrome/ServiceWorker";
 import "./globals.css";
 
@@ -47,7 +46,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <PlayerProvider>
           <Scene />
           <Clock />
-          <Presence />
           <TopNav />
           <main className="relative h-dvh overflow-y-auto overscroll-contain">
             {children}
